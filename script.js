@@ -6,7 +6,7 @@ let already_mined = false;
 let game_places;
 
 game_places = [{
-  directions: [1, 2, -1, -1], // position 0 (left, right, up, down)
+  directions: [1, 2, -1, 3], // position 0 (left, right, up, down)
   textField: "You are at home. Your mission is to defeat the Orks. Go west to the cave to get some resources. Once you have enough resources, you may buy a sword.",
   action_button: "Buy"
 }, {
@@ -17,6 +17,9 @@ game_places = [{
   directions: [0, -1, -1, -1], // position 2
   textField: "This is the final battle. Click the \"Battle\" button to fight the Orks",
   action_button: "Battle"
+}, {
+  directions: [-1, -1, 0, -1], // position 2
+  textField: "Dorazil jsi do Hospůdky na mýtince",
 }
 ]
 

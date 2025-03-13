@@ -1,41 +1,69 @@
 #container {
   background-color: #0077be;
-  /* set background color to blue */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  /* set height to full viewport height */
+  height: 100vh; /* set height to full viewport height */
+  padding: 2em; /* Adds padding around the container */
 }
 
 #text_area {
   font-size: 1.5em;
   color: white;
   text-align: center;
-  margin: 2em;
+  margin-bottom: 5em; /* Increased margin below text area for more space */
+  padding: 1em; /* Adds padding inside text area */
+  background-color: rgba(255, 255, 255, 0.2); /* Adds slight background to text area */
+  border-radius: 0.5em; /* Optional: rounded corners */
 }
 
 #button_container {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1em;
+  position: relative;
+  margin-bottom: 2em; /* Increased margin below button container */
+  padding: 1em; /* Adds padding inside the button container */
 }
 
 #button_container button {
   border-radius: 20%;
-  width: 5em;
-  height: 3em;
-  margin: 0.5em;
+  width: 5em; /* Increased button width */
+  height: 3em; /* Increased button height */
+  background-color: white;
+  color: #0077be;
+  border: none;
+  font-size: 1.2em; /* Increased font size for better readability */
+  padding: 0.5em; /* Adds padding inside buttons */
+}
+
+#up_button {
+  position: absolute;
+  top: -80px; /* Increased space above the center button */
+}
+
+#down_button {
+  position: absolute;
+  bottom: -80px; /* Increased space below the center button */
+}
+
+#left_button {
+  position: absolute;
+  left: -100px; /* Increased space to the left of the center button */
+}
+
+#right_button {
+  position: absolute;
+  right: -100px; /* Increased space to the right of the center button */
 }
 
 #action_button {
   border-radius: 0.5em;
-  padding: 1em;
-  font-size: 1.2em;
+  padding: 1.5em 2em; /* Increased padding inside the action button */
+  font-size: 1.5em; /* Increased font size for the action button */
   background-color: white;
   color: #0077be;
   border: none;
+  margin-top: 3em; /* Increased margin above action button */
 }
