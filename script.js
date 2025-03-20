@@ -6,20 +6,29 @@ let already_mined = false;
 let game_places;
 
 game_places = [{
-  directions: [1, 2, -1, 3], // position 0 (left, right, up, down)
-  textField: "You are at home. Your mission is to defeat the Orks. Go west to the cave to get some resources. Once you have enough resources, you may buy a sword.",
-  action_button: "Buy"
+  directions: [1, 2, 4, 3], // position 0 (left, right, up, down)
+  textField: "Jste doma. Vaším úkolem je porazit Orky a ostatní bossy. Jděte doleva do jeskyně a získejte nějaké suroviny. Až budeš mít dostatek surovin, můžeš jít nahoru a koupit meč, a taky jít dolů a koupit si další level krumpáče.",
+  action_button: "Koupit"
 }, {
-  directions: [-1, 0, -1, -1], // position 1
-  textField: "You're in a cave. Mine some gold by clicking the \"Mine\" button. (You can only go once) Then, once you've mined enough gold, go back home and then you can mine again.",
-  action_button: "Mine"
+  directions: [5, 0, -1, -1], // position 1
+  textField: "Jsi v jeskyni. Zde vytěž nějaký bronz. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
+  action_button: "Těžit"
 }, {
   directions: [0, -1, -1, -1], // position 2
-  textField: "This is the final battle. Click the \"Battle\" button to fight the Orks",
-  action_button: "Battle"
+  textField: "Počkej! Jsi u dveří, opravdu cheš jít ven?",
+  action_button: "Bojovat"
 }, {
-  directions: [-1, -1, 0, -1], // position 2
-  textField: "Dorazil jsi do Hospůdky na mýtince",
+  directions: [-1, -1, 0, -1], // position 3
+  textField: "Jsi v obchodu s krumpáčema.",
+  action_button: "Koupit"
+}, {
+  directions: [-1, -1, -1, 0], // position 4
+  textField: "Jsi v obchodu se zbraněmi.",
+  action_button: "Koupit"
+}, {
+  directions: [6, 1, -1, -1], // position 5
+  textField: "Jsi v jeskyni. Zde vytěž nějaké stříbro. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
+  action_button: "Koupit"
 }
 ]
 
@@ -67,6 +76,10 @@ function updateScreen() {
       action_button.style.display = "block";
     }
   } else if (current_position === 2) {
+    action_button.style.display = "block";
+  } else if (current_position === 3) {
+    action_button.style.display = "block";
+  } else if (current_position === 4) {
     action_button.style.display = "block";
   }
 }
@@ -118,7 +131,7 @@ document.getElementById("down_button").addEventListener("click", function() {
 });
 
 document.getElementById("action_button").addEventListener("click", function() {
-  if (current_position === 0) {
+  if (current_position === 4) {
     buySword();
   } else if (current_position === 1) {
     mineGold();
