@@ -3,6 +3,8 @@ let current_position = 0;
 let gold = 0;
 let inventory = [];
 let already_mined = false;
+let already_mined_2 = false;
+let already_mined_3 = false;
 let game_places;
 
 game_places = [{
@@ -11,12 +13,10 @@ game_places = [{
   action_button: "Koupit"
 }, {
   directions: [5, 0, -1, -1], // position 1
-  textField: "Jsi v jeskyni. Zde vytěž nějaký bronz. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
-  action_button: "Těžit"
-}, {
-  directions: [0, -1, -1, -1], // position 2
   textField: "Počkej! Jsi u dveří, opravdu cheš jít ven?",
-  action_button: "Bojovat"
+}, {
+  directions: [0, 14, -1, -1], // position 2
+  textField: "Počkej! Jsi u dveří, opravdu cheš jít ven?",
 }, {
   directions: [-1, -1, 0, -1], // position 3
   textField: "Jsi v obchodu s krumpáčema.",
@@ -26,9 +26,46 @@ game_places = [{
   textField: "Jsi v obchodu se zbraněmi.",
   action_button: "Koupit"
 }, {
-  directions: [6, 1, -1, -1], // position 5
+  directions: [6, 1, 8, 13], // position 5
   textField: "Jsi v jeskyni. Zde vytěž nějaké stříbro. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
-  action_button: "Koupit"
+  action_button: "Těžit"
+}, {
+  directions: [10, 5, 7, 12], // position 6
+  textField: "Jsi v jeskyni. Zde vytěž nějaké železo. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
+  action_button: "Těžit"
+}, {
+  directions: [9, 8, -1, 6], // position 7
+  textField: "Jsi v jeskyni. Zde vytěž nějaké zlato. Tady je konec jeskyně. Měl by ses vrátit zpátky.",
+  action_button: "Těžit"
+}, {
+  directions: [7, -1, -1, 5], // position 8
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+}, {
+  directions: [-1, 7, -1, 10], // position 9
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+}, {
+  directions: [-1, 6, 9, 11], // position 10
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+}, {
+  directions: [-1, 12, 10, -1], // position 11
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+}, {
+  directions: [11, 13, 6, -1], // position 12 (left, right, up, down)
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+}, {
+  directions: [12, -1, 5, -1], // position 13
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+}, {
+  directions: [2, -1, 15, 16], // position 14
+  textField: "Jsi na rozcestníku. Nahoře je první zápas, který je nejjednoduší, ale stejně pootřebuješ meč. Dole jsou další zápasy.",
+}, {
+  directions: [-1, -1, -1, 14], // position 15
+  textField: "Jsi u prvního zápasu, jsi připraven bojovat? ",
+  action_button: "Bojovat"
+}, {
+  directions: [-1, -1, 14, -1], // position 16
+  textField: "Jsi v dungeonu. Tady se ti budou objevovat další bossové. Na tyto bosse si musíš koupit další zbraně",
+  action_button: "Bojovat"
 }
 ]
 
@@ -66,21 +103,32 @@ function updateScreen() {
     down_button.style.display = "block";
   }
 
-  if (current_position === 0) {
+  if (current_position === 1) {
     already_mined = false;
+    already_mined_2 = false;
+    already_mined_3 = false;
+  } else if (current_position === 3) {
+    action_button.style.display = "block";
     if (gold > 2) {
       action_button.style.display = "block";
     }
-  } else if (current_position === 1) {
+  } else if (current_position === 4) {
+    action_button.style.display = "block";
+    if (gold > 2) {
+      action_button.style.display = "block";
+    }
+  } else if (current_position === 5) {
     if (!already_mined) {
       action_button.style.display = "block";
     }
-  } else if (current_position === 2) {
-    action_button.style.display = "block";
-  } else if (current_position === 3) {
-    action_button.style.display = "block";
-  } else if (current_position === 4) {
-    action_button.style.display = "block";
+  } else if (current_position === 6) {
+    if (!already_mined_2) {
+      action_button.style.display = "block";
+    }
+  } else if (current_position === 7) {
+    if (!already_mined_3) {
+      action_button.style.display = "block";
+    }
   }
 }
 
@@ -133,11 +181,11 @@ document.getElementById("down_button").addEventListener("click", function() {
 document.getElementById("action_button").addEventListener("click", function() {
   if (current_position === 4) {
     buySword();
-  } else if (current_position === 1) {
+  } else if (current_position === 5) {
     mineGold();
-  } else if (current_position === 2) {
+  } else if (current_position === 15) {
     startBattle();
   }
-});
+})
 
 updateScreen();
