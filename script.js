@@ -1,6 +1,8 @@
 
 let current_position = 0;
-let gold = 0;
+let zlato = 0;
+let stribro = 0;
+let zelezo = 0;
 let inventory = [];
 let already_mined = false;
 let already_mined_2 = false;
@@ -77,6 +79,9 @@ function updateScreen() {
   action_button.innerHTML = game_places[current_position].action_button;
   action_button.style.display = "none";
 
+  var inventory_area = document.getElementById("inventory_area");
+  inventory_area.innerHTML = "Inventář: " + (inventory.length > 0 ? inventory.join(", ") : "Prázdný");
+
   var left_button = document.getElementById("left_button");
   var right_button = document.getElementById("right_button");
   var up_button = document.getElementById("up_button");
@@ -109,12 +114,12 @@ function updateScreen() {
     already_mined_3 = false;
   } else if (current_position === 3) {
     action_button.style.display = "block";
-    if (gold > 2) {
+    if (stribro > 2) {
       action_button.style.display = "block";
     }
   } else if (current_position === 4) {
     action_button.style.display = "block";
-    if (gold > 2) {
+    if (stribro > 2) {
       action_button.style.display = "block";
     }
   } else if (current_position === 5) {
@@ -129,6 +134,8 @@ function updateScreen() {
     if (!already_mined_3) {
       action_button.style.display = "block";
     }
+  }else if (current_position === 15) {
+    action_button.style.display = "block"
   }
 }
 
@@ -137,25 +144,43 @@ function move(direction) {
   updateScreen();
 }
 
-function buySword() {
-  if (gold > 1) {
-    gold -= 2;
-    inventory.push("sword");
+function buyItem(itemName, cost) {
+  if (inventory.includes(itemName)) { 
+    alert("Už máš " + itemName + "!");
+    return;
   }
+
+  // Kontrola, jestli hráč má dostatek všech požadovaných surovin
+  if (stribro >= (cost.stribro || 0) &&
+      zlato >= (cost.zlato || 0) &&
+      zelezo >= (cost.zelezo || 0)) {
+      
+    // Odečtení surovin
+    stribro -= cost.stribro || 0;
+    zlato -= cost.zlato || 0;
+    zelezo -= cost.zelezo || 0;
+
+    // Přidání předmětu do inventáře
+    inventory.push(itemName);
+    updateScreen();
+  } else {
+    alert("Nemáš dostatek surovin na " + itemName + "!");
+  }
+
   updateScreen();
 }
 
-function mineGold() {
+function mineST() {
   if (already_mined) {
     return;
   }
-  gold++;
+  stribro++;
   already_mined = true;
   updateScreen();
 }
 
 function startBattle() {
-  if (inventory.indexOf("sword") === -1) {
+  if (inventory.indexOf("mec1") === -1) {
     alert("Orks defeated you! You lost!");
   } else {
     alert("Congratulations! You have defeated the Orks!");
@@ -180,9 +205,9 @@ document.getElementById("down_button").addEventListener("click", function() {
 
 document.getElementById("action_button").addEventListener("click", function() {
   if (current_position === 4) {
-    buySword();
+    buyItem("stříbrný meč",{ stribro: 2 });
   } else if (current_position === 5) {
-    mineGold();
+    mineST();
   } else if (current_position === 15) {
     startBattle();
   }
