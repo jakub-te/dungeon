@@ -1,9 +1,8 @@
-
 let current_position = 0;
 let zlato = 0;
 let stribro = 0;
 let zelezo = 0;
-let inventory = [];
+let inventory = ["chleba"];
 let already_mined = false;
 let already_mined_2 = false;
 let already_mined_3 = false;
@@ -69,7 +68,7 @@ game_places = [{
   textField: "Jsi v dungeonu. Tady se ti budou objevovat další bossové. Na tyto bosse si musíš koupit další zbraně",
   action_button: "Bojovat"
 }
-]
+];
 
 function updateScreen() {
   var text_area = document.getElementById("text_area");
@@ -180,13 +179,24 @@ function mineST() {
 }
 
 function startBattle() {
-  if (inventory.indexOf("mec1") === -1) {
+  if (inventory.indexOf("stříbrný meč") === -1) {
     alert("Orks defeated you! You lost!");
   } else {
     alert("Congratulations! You have defeated the Orks!");
   }
 }
-
+function mineFe() {
+  if (inventory.indexOf("stříbrný krumpáč") === -1) {
+    alert("Ještě nemáš stříbrný krumpáč!")
+  }else {
+    if (already_mined_2) {
+      return;
+    }
+    zelezo++;
+    already_mined_2 = true;
+    updateScreen();
+  }
+}
 document.getElementById("left_button").addEventListener("click", function() {
   move(0);
 });
@@ -204,13 +214,33 @@ document.getElementById("down_button").addEventListener("click", function() {
 });
 
 document.getElementById("action_button").addEventListener("click", function() {
-  if (current_position === 4) {
-    buyItem("stříbrný meč",{ stribro: 2 });
+  
+  if (current_position === 3) {
+    buyItem("stříbrný krumpáč", { stribro: 5 });
+  } else if (current_position === 4) {
+    buyItem("stříbrný meč", { stribro: 2 });
   } else if (current_position === 5) {
     mineST();
   } else if (current_position === 15) {
     startBattle();
+  } else if (current_position === 6) {
+    mineFe();
   }
-})
+});
+
+// New event listener for the Space key
+document.addEventListener("keydown", function(event) {
+  if (event.key === "ArrowLeft" && game_places[current_position].directions[0] !== -1) {
+    move(0);  // Move left
+  } else if (event.key === "ArrowRight" && game_places[current_position].directions[1] !== -1) {
+    move(1);  // Move right
+  } else if (event.key === "ArrowUp" && game_places[current_position].directions[2] !== -1) {
+    move(2);  // Move up
+  } else if (event.key === "ArrowDown" && game_places[current_position].directions[3] !== -1) {
+    move(3);  // Move down
+  } else if (event.key === " " && document.getElementById("action_button").style.display !== "none") {
+    document.getElementById("action_button").click();  // Simulate button click when space is pressed
+  }
+});
 
 updateScreen();
