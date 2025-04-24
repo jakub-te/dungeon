@@ -75,66 +75,39 @@ function updateScreen() {
   text_area.innerHTML = game_places[current_position].textField;
 
   var action_button = document.getElementById("action_button");
-  action_button.innerHTML = game_places[current_position].action_button;
   action_button.style.display = "none";
 
   var inventory_area = document.getElementById("inventory_area");
   inventory_area.innerHTML = "Inventář: " + (inventory.length > 0 ? inventory.join(", ") : "Prázdný");
+
+  var resources_area = document.getElementById("resources_area");
+  resources_area.innerHTML = `Rudy: Stříbro: ${stribro}, Železo: ${zelezo}, Zlato: ${zlato}`;
+
+  document.getElementById("extra_actions").style.display = "none";
 
   var left_button = document.getElementById("left_button");
   var right_button = document.getElementById("right_button");
   var up_button = document.getElementById("up_button");
   var down_button = document.getElementById("down_button");
 
-  if (game_places[current_position].directions[0] == -1) {
-    left_button.style.display = "none";
-  } else {
-    left_button.style.display = "block";
-  }
-  if (game_places[current_position].directions[1] == -1) {
-    right_button.style.display = "none";
-  } else {
-    right_button.style.display = "block";
-  }
-  if (game_places[current_position].directions[2] == -1) {
-    up_button.style.display = "none";
-  } else {
-    up_button.style.display = "block";
-  }
-  if (game_places[current_position].directions[3] == -1) {
-    down_button.style.display = "none";
-  } else {
-    down_button.style.display = "block";
-  }
+  [left_button, right_button, up_button, down_button].forEach((btn, i) => {
+    btn.style.display = game_places[current_position].directions[i] === -1 ? "none" : "block";
+  });
 
   if (current_position === 1) {
     already_mined = false;
     already_mined_2 = false;
     already_mined_3 = false;
   } else if (current_position === 3) {
+    document.getElementById("extra_actions").style.display = "block";
+  } else if (current_position === 4 || current_position === 15) {
     action_button.style.display = "block";
-    if (stribro > 2) {
-      action_button.style.display = "block";
-    }
-  } else if (current_position === 4) {
+  } else if (current_position === 5 && !already_mined) {
     action_button.style.display = "block";
-    if (stribro > 2) {
-      action_button.style.display = "block";
-    }
-  } else if (current_position === 5) {
-    if (!already_mined) {
-      action_button.style.display = "block";
-    }
-  } else if (current_position === 6) {
-    if (!already_mined_2) {
-      action_button.style.display = "block";
-    }
-  } else if (current_position === 7) {
-    if (!already_mined_3) {
-      action_button.style.display = "block";
-    }
-  }else if (current_position === 15) {
-    action_button.style.display = "block"
+  } else if (current_position === 6 && !already_mined_2) {
+    action_button.style.display = "block";
+  } else if (current_position === 7 && !already_mined_3) {
+    action_button.style.display = "block";
   }
 }
 
@@ -214,6 +187,16 @@ document.getElementById("down_button").addEventListener("click", function() {
 });
 
 document.getElementById("action_button").addEventListener("click", function() {
+
+document.getElementById("iron_button").addEventListener("click", function() {
+  buyItem("železný krumpáč", { zelezo: 2 });
+});
+document.getElementById("silver_button").addEventListener("click", function() {
+  buyItem("stříbrný krumpáč", { stribro: 5 });
+});
+document.getElementById("gold_button").addEventListener("click", function() {
+  buyItem("zlatý krumpáč", { zlato: 3 });
+});
   
   if (current_position === 3) {
     buyItem("stříbrný krumpáč", { stribro: 5 });
