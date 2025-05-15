@@ -19,13 +19,17 @@ game_places = [{
   directions: [0, 14, -1, -1], // position 2
   textField: "Počkej! Jsi u dveří, opravdu cheš jít ven?",
 }, {
-  directions: [-1, -1, 0, -1], // position 3
-  textField: "Jsi v obchodu s krumpáčema.",
-  action_button: "Koupit"
+  directions: [-1, -1, 0, 17], // position 3
+  textField: "Jsi v obchodu s krumpáčema. Stříbrný krumpáč stojí 5 stříbra.",
+  action_button: "Koupit",
+  name: "Stříbrný krumpáč",
+  cost: {stribro: 5}
 }, {
   directions: [-1, -1, -1, 0], // position 4
-  textField: "Jsi v obchodu se zbraněmi.",
-  action_button: "Koupit"
+  textField: "Jsi v obchodu se zbraněmi. Stříbrný meč stojí 2 stříbra",
+  action_button: "Koupit",
+  name: "Stříbrný meč",
+  cost: {stribro: 2}
 }, {
   directions: [6, 1, 8, 13], // position 5
   textField: "Jsi v jeskyni. Zde vytěž nějaké stříbro. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
@@ -67,6 +71,24 @@ game_places = [{
   directions: [-1, -1, 14, -1], // position 16
   textField: "Jsi v dungeonu. Tady se ti budou objevovat další bossové. Na tyto bosse si musíš koupit další zbraně",
   action_button: "Bojovat"
+}, {
+  directions: [-1, -1, 3, -1], // position 17
+  textField: "Jsi v obchodu s krumpáčema. Železný krumpáč stojí 10 železa.",
+  action_button: "Koupit",
+  name: "Železný krumpáč",
+  cost: {zelezo: 10}
+}, {
+  directions: [-1, 19, -1, 4], // position 18
+  textField: "Jsi v obchodu se zbraněmi. Puška stojí 10 železa.",
+  action_button: "Koupit",
+  name: "puška",
+  cost: {zelezo: 10}
+}, {
+  directions: [18, -1, -1, -1], // position 19
+  textField: "Jsi v obchodu se zbraněmi. Super puška stojí 20 zlata.", //dodelat zobrazovani action buttonu
+  action_button: "Koupit",
+  name: "super puška",
+  cost: {zlato: 20}
 }
 ];
 
@@ -75,6 +97,7 @@ function updateScreen() {
   text_area.innerHTML = game_places[current_position].textField;
 
   var action_button = document.getElementById("action_button");
+  action_button.innerHTML = game_places[current_position].action_button;
   action_button.style.display = "none";
 
   var inventory_area = document.getElementById("inventory_area");
@@ -83,24 +106,47 @@ function updateScreen() {
   var resources_area = document.getElementById("resources_area");
   resources_area.innerHTML = `Rudy: Stříbro: ${stribro}, Železo: ${zelezo}, Zlato: ${zlato}`;
 
-  document.getElementById("extra_actions").style.display = "none";
-
   var left_button = document.getElementById("left_button");
   var right_button = document.getElementById("right_button");
   var up_button = document.getElementById("up_button");
   var down_button = document.getElementById("down_button");
 
-  [left_button, right_button, up_button, down_button].forEach((btn, i) => {
-    btn.style.display = game_places[current_position].directions[i] === -1 ? "none" : "block";
-  });
+  console.log(game_places[current_position].directions);
+
+  if (game_places[current_position].directions[0] == -1) {
+    left_button.style.display = "none";
+  } else {
+    left_button.style.display = "block";
+  }
+  if (game_places[current_position].directions[1] == -1) {
+    right_button.style.display = "none";
+  } else {
+    right_button.style.display = "block";
+  }
+  if (game_places[current_position].directions[2] == -1) {
+    up_button.style.display = "none";
+  } else {
+    up_button.style.display = "block";
+  }
+  if (game_places[current_position].directions[3] == -1) {
+    down_button.style.display = "none";
+  } else {
+    down_button.style.display = "block";
+  }
+
+  if (current_position === 0) {
+    already_mined = false;
+    if (zlato > 2) {
+      action_button.style.display = "block";
+    }
+  }
+
 
   if (current_position === 1) {
     already_mined = false;
     already_mined_2 = false;
     already_mined_3 = false;
-  } else if (current_position === 3) {
-    document.getElementById("extra_actions").style.display = "block";
-  } else if (current_position === 4 || current_position === 15) {
+  } else if (current_position === 3 || current_position === 4 || current_position === 15 || current_position === 17 || current_position === 18 || current_position === 19) {
     action_button.style.display = "block";
   } else if (current_position === 5 && !already_mined) {
     action_button.style.display = "block";
@@ -188,27 +234,21 @@ document.getElementById("down_button").addEventListener("click", function() {
 
 document.getElementById("action_button").addEventListener("click", function() {
 
-document.getElementById("iron_button").addEventListener("click", function() {
-  buyItem("železný krumpáč", { zelezo: 2 });
-});
-document.getElementById("silver_button").addEventListener("click", function() {
-  buyItem("stříbrný krumpáč", { stribro: 5 });
-});
-document.getElementById("gold_button").addEventListener("click", function() {
-  buyItem("zlatý krumpáč", { zlato: 3 });
-});
-  
-  if (current_position === 3) {
-    buyItem("stříbrný krumpáč", { stribro: 5 });
-  } else if (current_position === 4) {
-    buyItem("stříbrný meč", { stribro: 2 });
-  } else if (current_position === 5) {
-    mineST();
-  } else if (current_position === 15) {
-    startBattle();
-  } else if (current_position === 6) {
-    mineFe();
+  current_action = game_places[current_position].action_button;
+  if(current_action == "Koupit"){
+    buyItem(game_places[current_position].name, game_places[current_position].cost)
   }
+  // if (current_position === 3) {
+  //   buyItem("stříbrný krumpáč", { stribro: 5 });
+  // } else if (current_position === 4) {
+  //   buyItem("stříbrný meč", { stribro: 2 });
+  // } else if (current_position === 5) {
+  //   mineST();
+  // } else if (current_position === 15) {
+  //   startBattle();
+  // } else if (current_position === 6) {
+  //   mineFe();
+  // }
 });
 
 // New event listener for the Space key
