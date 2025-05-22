@@ -2,7 +2,7 @@ let current_position = 0;
 let zlato = 0;
 let stribro = 0;
 let zelezo = 0;
-let inventory = ["chleba"];
+let inventory = ["chleba","dřevněný krumpáč"];
 let already_mined = false;
 let already_mined_2 = false;
 let already_mined_3 = false;
@@ -25,7 +25,7 @@ game_places = [{
   name: "Stříbrný krumpáč",
   cost: {stribro: 5}
 }, {
-  directions: [-1, -1, -1, 0], // position 4
+  directions: [-1, -1, 18, 0], // position 4
   textField: "Jsi v obchodu se zbraněmi. Stříbrný meč stojí 2 stříbra",
   action_button: "Koupit",
   name: "Stříbrný meč",
@@ -33,15 +33,24 @@ game_places = [{
 }, {
   directions: [6, 1, 8, 13], // position 5
   textField: "Jsi v jeskyni. Zde vytěž nějaké stříbro. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
-  action_button: "Těžit"
+  action_button: "Těžit",
+  name: "dřevněný krumpáč",
+  tezeni: stribro,
+  mined: already_mined
 }, {
   directions: [10, 5, 7, 12], // position 6
   textField: "Jsi v jeskyni. Zde vytěž nějaké železo. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
-  action_button: "Těžit"
+  action_button: "Těžit",
+  name: "stříbrný krumpáč",
+  tezeni: zelezo,
+  mined: already_mined_2
 }, {
   directions: [9, 8, -1, 6], // position 7
   textField: "Jsi v jeskyni. Zde vytěž nějaké zlato. Tady je konec jeskyně. Měl by ses vrátit zpátky.",
-  action_button: "Těžit"
+  action_button: "Těžit",
+  name: "železný krumpáč",
+  tezeni: zlato,
+  mined: already_mined_3
 }, {
   directions: [7, -1, -1, 5], // position 8
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
@@ -187,7 +196,18 @@ function buyItem(itemName, cost) {
 
   updateScreen();
 }
-
+function mine(itemName,ruda,mined) {
+  if (inventory.indexOf(itemName) === -1) {
+    alert("Ještě nemáš "+itemName+"!")
+  }else {
+    if (mined) {
+      return;
+    }
+    ruda++;
+    mined = true;
+    updateScreen();
+  }
+}
 function mineST() {
   if (already_mined) {
     return;
@@ -198,14 +218,14 @@ function mineST() {
 }
 
 function startBattle() {
-  if (inventory.indexOf("stříbrný meč") === -1) {
+  if (inventory.indexOf("Stříbrný meč") === -1) {
     alert("Orks defeated you! You lost!");
   } else {
     alert("Congratulations! You have defeated the Orks!");
   }
 }
 function mineFe() {
-  if (inventory.indexOf("stříbrný krumpáč") === -1) {
+  if (inventory.indexOf("Stříbrný krumpáč") === -1) {
     alert("Ještě nemáš stříbrný krumpáč!")
   }else {
     if (already_mined_2) {
@@ -238,17 +258,15 @@ document.getElementById("action_button").addEventListener("click", function() {
   if(current_action == "Koupit"){
     buyItem(game_places[current_position].name, game_places[current_position].cost)
   }
-  // if (current_position === 3) {
-  //   buyItem("stříbrný krumpáč", { stribro: 5 });
-  // } else if (current_position === 4) {
-  //   buyItem("stříbrný meč", { stribro: 2 });
-  // } else if (current_position === 5) {
-  //   mineST();
-  // } else if (current_position === 15) {
-  //   startBattle();
-  // } else if (current_position === 6) {
-  //   mineFe();
-  // }
+    if (current_position === 5) {
+    mine(game_places[current_position].name,game_places[current_position].tezeni,game_places[current_position].mined);
+  } else if (current_position === 15) {
+    startBattle();
+  } else if (current_position === 6) {
+    mine(game_places[current_position].name,game_places[current_position].tezeni,game_places[current_position].mined);
+  } else if (current_position === 7) {
+    mine(game_places[current_position].name,game_places[current_position].tezeni,game_places[current_position].mined);
+  }
 });
 
 // New event listener for the Space key
