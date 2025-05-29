@@ -2,10 +2,9 @@ let current_position = 0;
 let zlato = 0;
 let stribro = 0;
 let zelezo = 0;
-let inventory = ["chleba","dřevněný krumpáč"];
-let already_mined = false;
-let already_mined_2 = false;
-let already_mined_3 = false;
+let suroviny = [0, 0, 0];
+let already_mined = [false, false, false];
+let inventory = ["chleba","dřevěný krumpáč"];
 let game_places;
 
 game_places = [{
@@ -34,23 +33,23 @@ game_places = [{
   directions: [6, 1, 8, 13], // position 5
   textField: "Jsi v jeskyni. Zde vytěž nějaké stříbro. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
   action_button: "Těžit",
-  name: "dřevněný krumpáč",
-  tezeni: stribro,
-  mined: already_mined
+  name: "dřevěný krumpáč",
+  tezeni: 1,
+  mined: 1
 }, {
   directions: [10, 5, 7, 12], // position 6
   textField: "Jsi v jeskyni. Zde vytěž nějaké železo. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
   action_button: "Těžit",
   name: "stříbrný krumpáč",
   tezeni: zelezo,
-  mined: already_mined_2
+  mined: 2
 }, {
   directions: [9, 8, -1, 6], // position 7
   textField: "Jsi v jeskyni. Zde vytěž nějaké zlato. Tady je konec jeskyně. Měl by ses vrátit zpátky.",
   action_button: "Těžit",
   name: "železný krumpáč",
   tezeni: zlato,
-  mined: already_mined_3
+  mined: 0
 }, {
   directions: [7, -1, -1, 5], // position 8
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
@@ -144,7 +143,6 @@ function updateScreen() {
   }
 
   if (current_position === 0) {
-    already_mined = false;
     if (zlato > 2) {
       action_button.style.display = "block";
     }
@@ -152,16 +150,16 @@ function updateScreen() {
 
 
   if (current_position === 1) {
-    already_mined = false;
-    already_mined_2 = false;
-    already_mined_3 = false;
+    for(let i = 0; i < 3; i++){
+      already_mined[i] = false;
+    }
   } else if (current_position === 3 || current_position === 4 || current_position === 15 || current_position === 17 || current_position === 18 || current_position === 19) {
     action_button.style.display = "block";
-  } else if (current_position === 5 && !already_mined) {
+  } else if (current_position === 5 && !already_mined[1]) {
     action_button.style.display = "block";
-  } else if (current_position === 6 && !already_mined_2) {
+  } else if (current_position === 6 && !already_mined[2]) {
     action_button.style.display = "block";
-  } else if (current_position === 7 && !already_mined_3) {
+  } else if (current_position === 7 && !already_mined[0]) {
     action_button.style.display = "block";
   }
 }
@@ -200,11 +198,10 @@ function mine(itemName,ruda,mined) {
   if (inventory.indexOf(itemName) === -1) {
     alert("Ještě nemáš "+itemName+"!")
   }else {
-    if (mined) {
-      return;
+    if (!already_mined[mined]) {
+    suroviny[ruda]++;
+    already_mined[mined] = true;
     }
-    ruda++;
-    mined = true;
     updateScreen();
   }
 }
