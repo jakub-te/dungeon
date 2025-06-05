@@ -13,15 +13,15 @@ game_places = [{
   action_button: "Koupit"
 }, {
   directions: [5, 0, -1, -1], // position 1
-  textField: "Počkej! Jsi u dveří, opravdu cheš jít ven?",
+  textField: "Počkej! Jsi u dveří, opravdu cheš jít ven? Doleva jdeš do jeskyně, doprava domů.",
 }, {
   directions: [0, 14, -1, -1], // position 2
-  textField: "Počkej! Jsi u dveří, opravdu cheš jít ven?",
+  textField: "Počkej! Jsi u dveří, opravdu cheš jít ven? Doprava jdeš ma bosse, doleva domů.",
 }, {
   directions: [-1, -1, 0, 17], // position 3
   textField: "Jsi v obchodu s krumpáčema. Stříbrný krumpáč stojí 5 stříbra.",
   action_button: "Koupit",
-  name: "Stříbrný krumpáč",
+  name: "stříbrný krumpáč",
   cost: {stribro: 5}
 }, {
   directions: [-1, -1, 18, 0], // position 4
@@ -41,14 +41,14 @@ game_places = [{
   textField: "Jsi v jeskyni. Zde vytěž nějaké železo. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
   action_button: "Těžit",
   name: "stříbrný krumpáč",
-  tezeni: zelezo,
+  tezeni: 2,
   mined: 2
 }, {
   directions: [9, 8, -1, 6], // position 7
   textField: "Jsi v jeskyni. Zde vytěž nějaké zlato. Tady je konec jeskyně. Měl by ses vrátit zpátky.",
   action_button: "Těžit",
   name: "železný krumpáč",
-  tezeni: zlato,
+  tezeni: 0,
   mined: 0
 }, {
   directions: [7, -1, -1, 5], // position 8
@@ -83,7 +83,7 @@ game_places = [{
   directions: [-1, -1, 3, -1], // position 17
   textField: "Jsi v obchodu s krumpáčema. Železný krumpáč stojí 10 železa.",
   action_button: "Koupit",
-  name: "Železný krumpáč",
+  name: "železný krumpáč",
   cost: {zelezo: 10}
 }, {
   directions: [-1, 19, -1, 4], // position 18
@@ -101,6 +101,9 @@ game_places = [{
 ];
 
 function updateScreen() {
+  stribro=suroviny[1];
+  zelezo=suroviny[2];
+  zlato=suroviny[0];
   var text_area = document.getElementById("text_area");
   text_area.innerHTML = game_places[current_position].textField;
 
@@ -221,18 +224,7 @@ function startBattle() {
     alert("Congratulations! You have defeated the Orks!");
   }
 }
-function mineFe() {
-  if (inventory.indexOf("Stříbrný krumpáč") === -1) {
-    alert("Ještě nemáš stříbrný krumpáč!")
-  }else {
-    if (already_mined_2) {
-      return;
-    }
-    zelezo++;
-    already_mined_2 = true;
-    updateScreen();
-  }
-}
+
 document.getElementById("left_button").addEventListener("click", function() {
   move(0);
 });
