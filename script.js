@@ -6,6 +6,7 @@ let suroviny = [0, 0, 0];
 let already_mined = [false, false, false];
 let inventory = ["chleba","dřevěný krumpáč"];
 let game_places;
+let bosses;
 
 game_places = [{
   directions: [1, 2, 4, 3], // position 0 (left, right, up, down)
@@ -16,7 +17,7 @@ game_places = [{
   textField: "Počkej! Jsi u dveří, opravdu cheš jít ven? Doleva jdeš do jeskyně, doprava domů.",
 }, {
   directions: [0, 14, -1, -1], // position 2
-  textField: "Počkej! Jsi u dveří, opravdu cheš jít ven? Doprava jdeš ma bosse, doleva domů.",
+  textField: "Počkej! Jsi u dveří, opravdu cheš jít ven? Doprava jdeš na bosse, doleva domů.",
 }, {
   directions: [-1, -1, 0, 17], // position 3
   textField: "Jsi v obchodu s krumpáčema. Stříbrný krumpáč stojí 5 stříbra.",
@@ -99,6 +100,8 @@ game_places = [{
   cost: {zlato: 20}
 }
 ];
+
+bosses[{}]
 
 function updateScreen() {
   stribro=suroviny[1];
