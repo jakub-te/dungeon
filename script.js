@@ -6,7 +6,7 @@ let suroviny = [0, 0, 0];
 let already_mined = [false, false, false];
 let inventory = ["chleba","dřevěný krumpáč"];
 let game_places;
-let bosses;
+let nepratele;
 
 game_places = [{
   directions: [1, 2, 4, 3], // position 0 (left, right, up, down)
@@ -45,17 +45,17 @@ game_places = [{
   tezeni: 2,
   mined: 2
 }, {
-  directions: [9, 8, -1, 6], // position 7
+  directions: [9, 8, 21, 6], // position 7
   textField: "Jsi v jeskyni. Zde vytěž nějaké zlato. Tady je konec jeskyně. Měl by ses vrátit zpátky.",
   action_button: "Těžit",
   name: "železný krumpáč",
   tezeni: 0,
   mined: 0
 }, {
-  directions: [7, -1, -1, 5], // position 8
+  directions: [7, -1, 19, 5], // position 8
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
 }, {
-  directions: [-1, 7, -1, 10], // position 9
+  directions: [-1, 7, 22, 10], // position 9
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
 }, {
   directions: [-1, 6, 9, 11], // position 10
@@ -70,15 +70,15 @@ game_places = [{
   directions: [12, -1, 5, -1], // position 13
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
 }, {
-  directions: [2, -1, 15, 16], // position 14
-  textField: "Jsi na rozcestníku. Nahoře je první zápas, který je nejjednoduší, ale stejně pootřebuješ meč. Dole jsou další zápasy.",
+  directions: [2, 20, 15, 16], // position 14
+  textField: "Jsi na rozcestníku. Nahoře je první zápas, který je nejjednoduší, ale stejně pootřebuješ meč. Dole a vedle jsou další nepřátelé.",
 }, {
   directions: [-1, -1, -1, 14], // position 15
   textField: "Jsi u prvního zápasu, jsi připraven bojovat? ",
   action_button: "Bojovat"
 }, {
   directions: [-1, -1, 14, -1], // position 16
-  textField: "Jsi v dungeonu. Tady se ti budou objevovat další bossové. Na tyto bosse si musíš koupit další zbraně",
+  textField: "Jsi v dungeonu. Tady budeš bojovat s pandou.",
   action_button: "Bojovat"
 }, {
   directions: [-1, -1, 3, -1], // position 17
@@ -93,15 +93,36 @@ game_places = [{
   name: "puška",
   cost: {zelezo: 10}
 }, {
-  directions: [18, -1, -1, -1], // position 19
-  textField: "Jsi v obchodu se zbraněmi. Super puška stojí 20 zlata.", //dodelat zobrazovani action buttonu
+  directions: [21, -1, -1, 8], // position 19
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny."
+}, {
+  directions: [14, -1, -1, -1], // position 20 (left, right, up, down)
+  textField: "Jsi v obchodu se zbraněmi. Super puška stojí 20 zlata.", 
+  action_button: "Bojovat"
+}, {
+  directions: [22, 19, -1, 7], // position 21
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny."
+}, {
+  directions: [23, 21, -1, 9], // position 22
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny."
+}, {
+  directions: [-1, 22, -1, -1], // position 23
+  textField: "Jsi v knihovně. Tady si vem pravidla českého pravopisu.",
   action_button: "Koupit",
-  name: "super puška",
-  cost: {zlato: 20}
-}
-];
+  name: "Pravidla českého pravopisu",
+  cost: {stribro: 0}
+}];
 
-bosses[{}]
+nepratele=[{
+ textField: "První nepřítel tučnák je jednoduchý a potřebuješ jenom stříbrný meč.",
+ zbran: "Stříbrný meč"
+},{
+  textField: "Druhý nepřítel panda je trochu těžší a potřebuješ pušku.",
+ zbran: "puška"
+},{
+  textField: "Poslední nepřítel Martýnek je nejtěžší a potřebuješ najít pravidla českého pravopisu.",
+ zbran: "Pravidla českého pravopisu"
+}];
 
 function updateScreen() {
   stribro=suroviny[1];
@@ -159,7 +180,7 @@ function updateScreen() {
     for(let i = 0; i < 3; i++){
       already_mined[i] = false;
     }
-  } else if (current_position === 3 || current_position === 4 || current_position === 15 || current_position === 17 || current_position === 18 || current_position === 19) {
+  } else if (current_position === 3 || current_position === 4 || current_position === 15 || current_position === 17 || current_position === 18 || current_position === 19 || current_position === 23) {
     action_button.style.display = "block";
   } else if (current_position === 5 && !already_mined[1]) {
     action_button.style.display = "block";
