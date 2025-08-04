@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victory Screen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #282c34;
+            color: white;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .victory-container {
+            background-color: #4CAF50;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 4em;
+            margin: 0;
+            color: white;
+        }
+        p {
+            font-size: 1.5em;
+            color: #eaeaea;
+        }
+        .btn {
+            background-color: #fff;
+            color: #4CAF50;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="victory-container">
+        <h1>Vítěztví!</h1>
+        <p>Vyhrál jsi hru!</p>
+        <button class="btn" onclick="jump()">Play Again</button>
+    </div>
+    <script>
+        function jump(){
+            window.location.href = "index.html";
+        }
+    </script>
+
+</body>
+</html>

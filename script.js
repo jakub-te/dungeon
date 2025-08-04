@@ -46,7 +46,7 @@ game_places = [{
   mined: 2
 }, {
   directions: [9, 8, 21, 6], // position 7
-  textField: "Jsi v jeskyni. Zde vytěž nějaké zlato. Tady je konec jeskyně. Měl by ses vrátit zpátky.",
+  textField: "Jsi v jeskyni. Zde vytěž nějaké zlato. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
   action_button: "Těžit",
   name: "železný krumpáč",
   tezeni: 0,
@@ -74,11 +74,11 @@ game_places = [{
   textField: "Jsi na rozcestníku. Nahoře je první zápas, který je nejjednoduší, ale stejně pootřebuješ meč. Dole a vedle jsou další nepřátelé.",
 }, {
   directions: [-1, -1, -1, 14], // position 15
-  textField: "Jsi u prvního zápasu, jsi připraven bojovat? ",
+  textField: "Tady je první nepřítel tučňák, jsi připraven bojovat? ",
   action_button: "Bojovat"
 }, {
   directions: [-1, -1, 14, -1], // position 16
-  textField: "Jsi v dungeonu. Tady budeš bojovat s pandou.",
+  textField: "Jsi v dungeonu. Tady budeš bojovat s pandou, zbraní kterou potřebuješ na její porážku je puška.",
   action_button: "Bojovat"
 }, {
   directions: [-1, -1, 3, -1], // position 17
@@ -87,17 +87,17 @@ game_places = [{
   name: "železný krumpáč",
   cost: {zelezo: 10}
 }, {
-  directions: [-1, 19, -1, 4], // position 18
-  textField: "Jsi v obchodu se zbraněmi. Puška stojí 10 železa.",
+  directions: [-1, -1, -1, 4], // position 18
+  textField: "Jsi v obchodu se zbraněmi. Puška stojí 10 zlata.",
   action_button: "Koupit",
   name: "puška",
-  cost: {zelezo: 10}
+  cost: {zlato: 10}
 }, {
   directions: [21, -1, -1, 8], // position 19
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny."
 }, {
   directions: [14, -1, -1, -1], // position 20 (left, right, up, down)
-  textField: "Jsi v obchodu se zbraněmi. Super puška stojí 20 zlata.", 
+  textField: "Tady je nejtěžší nepřítel Martýnek, jako zbraň potřebuješ Pravidla českého pravopisu.", 
   action_button: "Bojovat"
 }, {
   directions: [22, 19, -1, 7], // position 21
@@ -107,7 +107,7 @@ game_places = [{
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny."
 }, {
   directions: [-1, 22, -1, -1], // position 23
-  textField: "Jsi v knihovně. Tady si vem pravidla českého pravopisu.",
+  textField: "Jsi v knihovně. Tady si vem pravidla českého pravopisu.Tady je konec jeskyně. Měl by ses vrátit zpátky.",
   action_button: "Koupit",
   name: "Pravidla českého pravopisu",
   cost: {stribro: 0}
@@ -180,9 +180,9 @@ function updateScreen() {
     for(let i = 0; i < 3; i++){
       already_mined[i] = false;
     }
-  } else if (current_position === 3 || current_position === 4 || current_position === 15 || current_position === 17 || current_position === 18 || current_position === 19 || current_position === 23) {
+  } else if (current_position === 3 || current_position === 4 || current_position === 15 || current_position === 17 || current_position === 18 || current_position === 23 || current_position === 16) {
     action_button.style.display = "block";
-  } else if (current_position === 5 && !already_mined[1]) {
+  } else if (current_position === 5 && !already_mined[1] || current_position === 20) {
     action_button.style.display = "block";
   } else if (current_position === 6 && !already_mined[2]) {
     action_button.style.display = "block";
@@ -232,21 +232,18 @@ function mine(itemName,ruda,mined) {
     updateScreen();
   }
 }
-function mineST() {
-  if (already_mined) {
-    return;
-  }
-  stribro++;
-  already_mined = true;
-  updateScreen();
-}
 
-function startBattle() {
-  if (inventory.indexOf("Stříbrný meč") === -1) {
-    alert("Orks defeated you! You lost!");
+
+function startBattle(zbran) {
+  if (inventory.indexOf(zbran) === -1) {
+    alert("Bohužel jsi prohrál, zkus to znovu");
   } else {
-    alert("Congratulations! You have defeated the Orks!");
+    alert("Jooo vyhrál jsi, můžeš jít na další zápas");
+    if(current_position=20){
+      window.location.href = "win.html";
+    }
   }
+  
 }
 
 document.getElementById("left_button").addEventListener("click", function() {
@@ -274,12 +271,17 @@ document.getElementById("action_button").addEventListener("click", function() {
     if (current_position === 5) {
     mine(game_places[current_position].name,game_places[current_position].tezeni,game_places[current_position].mined);
   } else if (current_position === 15) {
-    startBattle();
+    startBattle(nepratele[0].zbran);
+  } else if (current_position === 16) {
+    startBattle(nepratele[1].zbran);
+  } else if (current_position === 20) {
+    startBattle(nepratele[2].zbran);
   } else if (current_position === 6) {
     mine(game_places[current_position].name,game_places[current_position].tezeni,game_places[current_position].mined);
   } else if (current_position === 7) {
     mine(game_places[current_position].name,game_places[current_position].tezeni,game_places[current_position].mined);
   }
+  
 });
 
 // New event listener for the Space key
