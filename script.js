@@ -208,9 +208,9 @@ function buyItem(itemName, cost) {
       zelezo >= (cost.zelezo || 0)) {
       
     // Odečtení surovin
-    stribro -= cost.stribro || 0;
-    zlato -= cost.zlato || 0;
-    zelezo -= cost.zelezo || 0;
+    suroviny[1] -= cost.stribro || 0;
+    suroviny[0] -= cost.zlato || 0;
+    suroviny[2] -= cost.zelezo || 0;
 
     // Přidání předmětu do inventáře
     inventory.push(itemName);
@@ -239,7 +239,7 @@ function startBattle(zbran) {
     alert("Bohužel jsi prohrál, zkus to znovu");
   } else {
     alert("Jooo vyhrál jsi, můžeš jít na další zápas");
-    if(current_position=20){
+    if(current_position==20){
       window.location.href = "win.html";
     }
   }
