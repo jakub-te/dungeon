@@ -4,7 +4,7 @@ let stribro = 0;
 let zelezo = 0;
 let suroviny = [0, 0, 0];
 let already_mined = [false, false, false];
-let inventory = ["chleba","dřevěný krumpáč"];
+let inventory = ["chleba","dřevěný krumpáč","pochodeň"];
 let game_places;
 let nepratele;
 
