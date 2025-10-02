@@ -6,8 +6,38 @@
   justify-content: center;
   height: 100vh; /* set height to full viewport height */
   padding: 2em; /* Adds padding around the container */
+  position: relative;
+}
+/* Kontejner mapy */
+.map-container {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 60px; /* zvětšeno z 60px */
+  height: 40px;  /* zvětšeno z 40px */
+  z-index: 10; /* aby byla nad ostatními prvky */
 }
 
+/* Obrázek mapy */
+.map-image {
+  width: 20vw;
+  height: auto;
+  position: relative;
+  right: calc(100% + 60px);
+  object-fit: cover;
+}
+
+/* Tečka */
+.dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  top: 50%;  /* 50 % odshora */
+  left: 30%; /* 30 % zleva */
+  /* transform: translate(-50%, -50%); */
+}
 #text_area {
   font-size: 1.5em;
   color: white;
@@ -85,3 +115,4 @@
   border: none;
   margin-top: 3em; /* Increased margin above action button */
 }
+
