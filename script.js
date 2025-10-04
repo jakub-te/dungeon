@@ -7,110 +7,160 @@ let already_mined = [false, false, false];
 let inventory = ["chleba","dřevěný krumpáč","pochodeň"];
 let game_places;
 let nepratele;
+const blocks_x = 9;
+const blocks_y = 5;
 
 game_places = [{
   directions: [1, 2, 4, 3], // position 0 (left, right, up, down)
   textField: "Jste doma. Vaším úkolem je porazit Orky a ostatní bossy. Jděte doleva do jeskyně a získejte nějaké suroviny. Až budeš mít dostatek surovin, můžeš jít nahoru a koupit meč, a taky jít dolů a koupit si další level krumpáče.",
-  action_button: "Koupit"
+  action_button: "Koupit",
+  x:6,
+  y:3
 }, {
   directions: [5, 0, -1, -1], // position 1
   textField: "Počkej! Jsi u dveří, opravdu cheš jít ven? Doleva jdeš do jeskyně, doprava domů.",
+  x:5,
+  y:3
 }, {
   directions: [0, 14, -1, -1], // position 2
   textField: "Počkej! Jsi u dveří, opravdu cheš jít ven? Doprava jdeš na bosse, doleva domů.",
+  x:7,
+  y:3
 }, {
   directions: [-1, -1, 0, 17], // position 3
   textField: "Jsi v obchodu s krumpáčema. Stříbrný krumpáč stojí 5 stříbra.",
   action_button: "Koupit",
   name: "stříbrný krumpáč",
-  cost: {stribro: 5}
+  cost: {stribro: 5},
+  x:6,
+  y:4
 }, {
   directions: [-1, -1, 18, 0], // position 4
   textField: "Jsi v obchodu se zbraněmi. Stříbrný meč stojí 2 stříbra",
   action_button: "Koupit",
   name: "Stříbrný meč",
-  cost: {stribro: 2}
+  cost: {stribro: 2},
+  x:6,
+  y:2
 }, {
   directions: [6, 1, 8, 13], // position 5
   textField: "Jsi v jeskyni. Zde vytěž nějaké stříbro. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
   action_button: "Těžit",
   name: "dřevěný krumpáč",
   tezeni: 1,
-  mined: 1
+  mined: 1,
+  x:4,
+  y:3
 }, {
   directions: [10, 5, 7, 12], // position 6
   textField: "Jsi v jeskyni. Zde vytěž nějaké železo. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
   action_button: "Těžit",
   name: "stříbrný krumpáč",
   tezeni: 2,
-  mined: 2
+  mined: 2,
+  x:3,
+  y:3
 }, {
   directions: [9, 8, 21, 6], // position 7
   textField: "Jsi v jeskyni. Zde vytěž nějaké zlato. Můžeš jít dál, aby jsi vytěžil lepší suroviny.",
   action_button: "Těžit",
   name: "železný krumpáč",
   tezeni: 0,
-  mined: 0
+  mined: 0,
+  x:3,
+  y:2
 }, {
   directions: [7, -1, 19, 5], // position 8
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+  x:4,
+  y:2
 }, {
   directions: [-1, 7, 22, 10], // position 9
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+  x:2,
+  y:2
 }, {
   directions: [-1, 6, 9, 11], // position 10
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+  x:2,
+  y:3
 }, {
   directions: [-1, 12, 10, -1], // position 11
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+  x:2,
+  y:4
 }, {
   directions: [11, 13, 6, -1], // position 12 (left, right, up, down)
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+  x:3,
+  y:4
 }, {
   directions: [12, -1, 5, -1], // position 13
   textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+  x:4,
+  y:4
 }, {
   directions: [2, 20, 15, 16], // position 14
   textField: "Jsi na rozcestníku. Nahoře je první zápas, který je nejjednoduší, ale stejně pootřebuješ meč. Dole a vedle jsou další nepřátelé.",
+  x:8,
+  y:3
 }, {
   directions: [-1, -1, -1, 14], // position 15
   textField: "Tady je první nepřítel tučňák, jsi připraven bojovat? ",
-  action_button: "Bojovat"
+  action_button: "Bojovat",
+  x:8,
+  y:2
 }, {
   directions: [-1, -1, 14, -1], // position 16
   textField: "Jsi v dungeonu. Tady budeš bojovat s pandou, zbraní kterou potřebuješ na její porážku je puška.",
-  action_button: "Bojovat"
+  action_button: "Bojovat",
+  x:8,
+  y:4
 }, {
   directions: [-1, -1, 3, -1], // position 17
   textField: "Jsi v obchodu s krumpáčema. Železný krumpáč stojí 10 železa.",
   action_button: "Koupit",
   name: "železný krumpáč",
-  cost: {zelezo: 10}
+  cost: {zelezo: 10},
+  x:6,
+  y:5
 }, {
   directions: [-1, -1, -1, 4], // position 18
   textField: "Jsi v obchodu se zbraněmi. Puška stojí 10 zlata.",
   action_button: "Koupit",
   name: "puška",
-  cost: {zlato: 10}
+  cost: {zlato: 10},
+  x:6,
+  y:1
 }, {
   directions: [21, -1, -1, 8], // position 19
-  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny."
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+  x:4,
+  y:1
 }, {
   directions: [14, -1, -1, -1], // position 20 (left, right, up, down)
   textField: "Tady je nejtěžší nepřítel Martýnek, jako zbraň potřebuješ Pravidla českého pravopisu.", 
-  action_button: "Bojovat"
+  action_button: "Bojovat",
+  x:9,
+  y:3
 }, {
   directions: [22, 19, -1, 7], // position 21
-  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny."
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+  x:3,
+  y:1
 }, {
   directions: [23, 21, -1, 9], // position 22
-  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny."
+  textField: "Jsi v jeskyni. Běž dál, aby jsi mohl natěžit další suroviny.",
+  x:2,
+  y:1
 }, {
   directions: [-1, 22, -1, -1], // position 23
   textField: "Jsi v knihovně. Tady si vem pravidla českého pravopisu.Tady je konec jeskyně. Měl by ses vrátit zpátky.",
   action_button: "Koupit",
   name: "Pravidla českého pravopisu",
-  cost: {stribro: 0}
+  cost: {stribro: 0},
+  x:1,
+  y:1
 }];
 
 nepratele=[{
@@ -128,6 +178,17 @@ function updateScreen() {
   stribro=suroviny[1];
   zelezo=suroviny[2];
   zlato=suroviny[0];
+  
+  let dot_x_block = 100/blocks_x;
+  let dot_y_block = 100/blocks_y;
+  let dot_left = game_places[current_position].x*dot_x_block-dot_x_block/2;
+  let dot_top = game_places[current_position].y*dot_y_block-dot_y_block/2;
+
+  var dot = document.getElementById("dot");
+  dot.style.setProperty("top",`${dot_top}%`);
+  dot.style.setProperty("left",`${dot_left}%`);
+
+
   var text_area = document.getElementById("text_area");
   text_area.innerHTML = game_places[current_position].textField;
 
