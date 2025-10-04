@@ -12,7 +12,7 @@
 .map-container {
   position: absolute;
   top: 1em;
-  right: 1em;
+  right: 60px;
   width: 60px; /* zvětšeno z 60px */
   height: 40px;  /* zvětšeno z 40px */
   z-index: 10; /* aby byla nad ostatními prvky */
@@ -20,10 +20,9 @@
 
 /* Obrázek mapy */
 .map-image {
-  width: 20vw;
+  /* width: 20vw; */
   height: auto;
   position: relative;
-  right: calc(100% + 60px);
   object-fit: cover;
 }
 
